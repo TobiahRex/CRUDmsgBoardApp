@@ -53,7 +53,6 @@ let Posts = {
     });
   },
   edit(editObj, cb){
-    console.log('editObj: ', editObj, '\ncb: ', cb);
     let dbData;
     fs.readFile(path.join(__dirname, './db.json'), (err, data)=> {
       if(err) cb(err);

@@ -12,6 +12,8 @@ const path        = require('path');
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
+
+
 app.get('/', (req, res) => {
   let indexPath = path.join(__dirname, 'index.html');
   res.sendFile(indexPath);
@@ -19,7 +21,6 @@ app.get('/', (req, res) => {
 
 app.get('/posts', (req, res) => {
   Posts.get((err, dbData)=> {
-    console.log('err: ', err);
     res.status(err ? 400 : 200).send(err || dbData);
   });
 });
@@ -36,7 +37,6 @@ app.get('/posts/:id', (req, res)=>{
   });
 });
 app.put('/posts/:id', (req, res)=> {
-  console.log('req.body: ', req.body);
   let editObj = {id : req.params.id, post : req.body.post};
   Posts.edit(editObj, err => {
     err ? res.status(400) : Posts.get((err, dbData) => {
