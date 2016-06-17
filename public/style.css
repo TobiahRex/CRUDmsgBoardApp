@@ -11,6 +11,8 @@ button.btn {
 button.btn-success {
   color: #000000;
   font-weight: bold;
+  font-size: 18px;
+
 }
 
 div.template {
@@ -19,7 +21,7 @@ div.template {
 
 .btn.btn-success {
   background-color: rgb(69, 177, 2);
-  /*width: 10%;*/
+  height: 38px;
 }
 
 input.new-author.form-control {
