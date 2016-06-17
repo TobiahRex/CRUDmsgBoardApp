@@ -11,7 +11,6 @@ let getPosts = () => {
   $.get('/posts')
   .done((data)=> {
     let dbPosts = data;
-    console.log('dbData: ', dbPosts);
     renderPosts(dbPosts);
   });
 }
@@ -19,7 +18,6 @@ let createPost = () => {
   event.preventDefault();
   let newAuthor = $('input.new-author').val();
   let newPost   = $('input.new-post').val();
-  console.log('author: ', newAuthor, '\npost: ', newPost);
   $.post('/posts', {
     author : newAuthor,
     post   : newPost
@@ -61,7 +59,6 @@ let cancelEdit = () => {
 }
 let deletePost = event => {
   let $deleteId = event.toElement.parentElement.parentElement.parentElement.attributes.id.value;
-  console.log('$deleteId: ', $deleteId);
   $.ajax({
     url   : `/posts/${$deleteId}`,
     type  : 'DELETE'
