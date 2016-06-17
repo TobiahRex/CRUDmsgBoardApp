@@ -4,8 +4,35 @@ $(() => {
   getPosts();
   $('.create-post').on('click', createPost);
   $('.all-posts').on('click', '.delete-btn' ,deletePost);
+  $('.all-posts').on('click', '.edit-btn' ,editPost);
 });
 
+let getPosts = () => {
+  $.get('/posts')
+  .done((data)=> {
+    let dbPosts = data;
+    console.log('dbData: ', dbPosts);
+    renderPosts(dbPosts);
+  });
+}
+let createPost = () => {
+  event.preventDefault();
+  let newAuthor = $('input.new-author').val();
+  let newPost   = $('input.new-post').val();
+  console.log('author: ', newAuthor, '\npost: ', newPost);
+  $.post('/posts', {
+    author : newAuthor,
+    post   : newPost
+  }).done(()=>{
+    getPosts();
+  });
+};
+let editPost = event => {
+  // $editObj = {
+  //   id    : event.toElement.parentElement.parentElement.parentElement.attributes.id.value,
+  //   post  :
+  // }
+}
 let deletePost = event => {
   let $deleteId = event.toElement.parentElement.parentElement.parentElement.attributes.id.value;
   console.log('$deleteId: ', $deleteId);
@@ -21,26 +48,6 @@ let deletePost = event => {
     alert('Failed To Delete');
   });
 };
-let createPost = () => {
-  event.preventDefault();
-  let newAuthor = $('input.new-author').val();
-  let newPost   = $('input.new-post').val();
-  console.log('author: ', newAuthor, '\npost: ', newPost);
-  $.post('/posts', {
-    author : newAuthor,
-    post   : newPost
-  }).done(()=>{
-    getPosts();
-  });
-};
-let getPosts = () => {
-  $.get('/posts')
-  .done((data)=> {
-    let dbPosts = data;
-    console.log('dbData: ', dbPosts);
-    renderPosts(dbPosts);
-  });
-}
 let renderPosts = dbPosts => {
   $('.append-here').empty();
   dbPosts.sort((a, b)=> {

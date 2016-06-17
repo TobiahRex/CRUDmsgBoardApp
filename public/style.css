@@ -8,9 +8,21 @@ button.btn-success {
 }
 
 div.template {
-  display: none;
+  /*display: none;*/
+}
+
+
+input.template-edit-message.form-control {
+  width: 80%;
+  background-color: rgba(184, 184, 184, 0.5);
+  font-style: italic;
+  font-size: 18px;
 }
 
 p.template-post-message {
   margin-top : 20px;
+}
+
+button.edit-btn, button.save-btn {
+  margin-right : 10px;
 }
