@@ -43,7 +43,8 @@ let Posts = {
       let date = Date(Date.now());
       let newPost = {id, date,
         author : body.author,
-        post   : body.post
+        post   : body.post,
+        sortD  : Date.now()
       };
       dbData.push(newPost);
       fs.writeFile(path.join(__dirname, './db.json'), JSON.stringify(dbData), err => {
