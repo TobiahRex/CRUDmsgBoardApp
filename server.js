@@ -29,6 +29,11 @@ app.post('/posts', (req, res)=> {
     });
   });
 });
+app.get('/posts/:id', (req, res)=>{
+  Posts.getById(req.params.id, (err, dbData)=>{
+    res.status(err ? 400 : 200).send(err || dbData);
+  });
+});
 app.put('/posts/:id', (req, res)=> {
   let editObj = {id : req.params.id, post : req.body.post};
   Posts.edit(editObj, err => {

@@ -16,6 +16,20 @@ let Posts = {
       }; cb(dbData);
     });
   },
+  getById(id, cb){
+    let dbData;
+    fs.readFile(path.join(__dirname, '.db/json'), (err, data)=> {
+      if(err) cb(err);
+      try {
+        dbData = JSON.parse(data);
+      } catch(err){
+        cb(err);
+      };
+      dbData.forEach(dbPost => {
+        if(dbPost.id === id) cb(dbPost);
+      });
+    });
+  },
   create(body, cb){
     let dbData;
     fs.readFile(path.join(__dirname, './db.json'), (err, data)=> {
@@ -59,7 +73,6 @@ let Posts = {
     });
   },
   remove(id, cb){
-    console.log('id: ', id);
     let dbData;
     fs.readFile(path.join(__dirname, './db.json'), (err, data)=> {
       if(err) return cb(err);
@@ -68,11 +81,10 @@ let Posts = {
       } catch(err){
         cb(err);
       };
-      dbData = dbData.filter(dbPost => {
-        console.log('dbPost.id: ', dbPost.id);
-        dbPost.id !== id;
+      let newData = dbData.filter(dbPost => {
+        return dbPost.id !== id;
       });
-      fs.writeFile(path.join(__dirname, './db.json'), JSON.stringify(dbData), err => {
+      fs.writeFile(path.join(__dirname, './db.json'), JSON.stringify(newData), err => {
         err ? cb(err) : cb(null);
       });
     });
