@@ -16,7 +16,7 @@ let Posts = {
       }; cb(dbData);
     });
   },
-  post(body, cb){
+  create(body, cb){
     let dbData;
     fs.readFile(path.join(__dirname, './db.json'), (err, data)=> {
       if(err) cb(err);
@@ -31,11 +31,34 @@ let Posts = {
         author : body.author,
         post   : body.post
       };
-      fs.writeFile(path.join(__dirname, './db.json'), JSON.stringify(newPost), err => {
+      dbData.push(newPost);
+      fs.writeFile(path.join(__dirname, './db.json'), JSON.stringify(dbData), err => {
+        err ? cb(err) : cb(null);
+      });
+    });
+  },
+  edit(editObj, cb){
+    console.log('editObj: ', editObj, '\ncb: ', cb);
+    let dbData;
+    fs.readFile(path.join(__dirname, './db.json'), (err, data)=> {
+      if(err) cb(err);
+      try {
+        dbData = JSON.parse(data);
+      } catch(err) {
+        cb(err);
+      };
+      dbData.forEach(dbPost => {
+        if(dbPost.id === editObj.id) {
+          dbPost.post = editObj.post;
+          dbPost.date = Date(Date.now());
+        };
+      });
+      fs.writeFile(path.join(__dirname, './db.json'), JSON.stringify(dbData), err => {
         err ? cb(err) : cb(null);
       });
     });
   }
 };
+
 
 module.exports = Posts;

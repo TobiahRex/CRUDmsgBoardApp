@@ -23,8 +23,16 @@ app.get('/posts', (req, res) => {
   });
 });
 app.post('/posts', (req, res)=> {
-  Posts.post(req.body, (err, dbData)=> {
+  Posts.create(req.body, err => {
     err ? res.status(400) : Posts.get((err, dbData)=> {
+      res.status(err ? 400 : 200).send(err || dbData);
+    });
+  });
+});
+app.put('/posts/:id', (req, res)=> {
+  let editObj = {id : req.params.id, post : req.body.post};
+  Posts.edit(editObj, err => {
+    err ? res.status(400) : Posts.get((err, dbData) => {
       res.status(err ? 400 : 200).send(err || dbData);
     });
   });
