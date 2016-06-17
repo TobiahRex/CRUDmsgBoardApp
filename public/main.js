@@ -4,7 +4,7 @@ $(() => {
   getPosts();
   $('.create-post').on('click', createPost);
   $('.all-posts').on('click', '.delete-btn' ,deletePost);
-  $('.all-posts').on('click', '.edit-btn' ,editPost);
+  $('.all-posts').on('click', '.edit-btn' , watchEdit);
 });
 
 let getPosts = () => {
@@ -27,19 +27,44 @@ let createPost = () => {
     getPosts();
   });
 };
-let editPost = event => {
-  // $editObj = {
-  //   id    : event.toElement.parentElement.parentElement.parentElement.attributes.id.value,
-  //   post  :
-  // }
+let watchEdit = () => {
+  let editId = event.toElement.parentElement.parentElement.parentElement.attributes.id.value;
+  $("div").find("[id='" + editId + "']").find('.post-row').addClass('hidden');
+  $("div").find("[id='" + editId + "']").find('.edit-row').removeClass('hidden');
+  let $editField = $("div").find("[id='" + editId + "']").find('.template-edit-message');
+  let $oldPost = $("div").find("[id='" + editId + "']").find('.template-post-message').text();
+  $editField.val($oldPost);
+
+  $('.save-btn').on('click', saveEdit);
+  $('.cancel-btn').on('click', cancelEdit);
+};
+let saveEdit = event => {
+  let editId = event.toElement.parentElement.parentElement.parentElement.parentElement.attributes.id.value;
+  let $newPost = $("div").find("[id='" + editId + "']").find('.template-edit-message').val()
+  $.ajax({
+    url   :   `/posts/${editId}`,
+    type  :   'PUT',
+    data  :   {post : $newPost}
+  })
+  .done(()=>{
+    getPosts();
+  })
+  .fail(()=>{
+    alert('Failed to Update. Try Again.');
+  })
+};
+let cancelEdit = () => {
+  let editId = event.toElement.parentElement.parentElement.parentElement.parentElement.attributes.id.value;
+  $("div").find("[id='" + editId + "']").find('.template-edit-message').val('');
+  $("div").find("[id='" + editId + "']").find('.edit-row').addClass('hidden');
+  $("div").find("[id='" + editId + "']").find('.post-row').removeClass('hidden');
 }
 let deletePost = event => {
   let $deleteId = event.toElement.parentElement.parentElement.parentElement.attributes.id.value;
   console.log('$deleteId: ', $deleteId);
   $.ajax({
     url   : `/posts/${$deleteId}`,
-    type  : 'DELETE',
-
+    type  : 'DELETE'
   })
   .done(()=> {
     getPosts();
@@ -55,7 +80,7 @@ let renderPosts = dbPosts => {
   });
   dbPosts.forEach(dbPost => {
     let $newPost = $('div.template').clone();
-    $newPost.removeClass('template').addClass('new-post').attr('id', dbPost.id);
+    $newPost.removeClass('template hidden').addClass('new-post').attr('id', dbPost.id);
     $newPost.find('.template-author-name').removeClass('template-author-name').addClass('author-Name').text(dbPost.author);
     let date = dbPost.date.slice(0,24);
     $newPost.find('.template-time-stamp').removeClass('template-time-stamp').addClass('time-stamp').text(date);

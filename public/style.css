@@ -8,9 +8,17 @@ button.btn-success {
 }
 
 div.template {
-  /*display: none;*/
+  display: none;
 }
 
+input.new-author, input.new-post {
+  color: #333;
+}
+
+input.new-author {
+  font-style: italic;
+  font-size: 18px;
+}
 
 input.template-edit-message.form-control {
   width: 80%;
