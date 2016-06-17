@@ -21,6 +21,6 @@ let renderPosts = dbPosts => {
   });
 };
 
-let createPost = () => {
-  let newAuthor = $('')
-}
+// let createPost = () => {
+//   let newAuthor = $('')
+// }
