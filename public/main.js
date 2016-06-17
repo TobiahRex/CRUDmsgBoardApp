@@ -1,13 +1,32 @@
 'use strict';
 
 $(() => {
-      $.get('/posts')
-      .done((data)=> {
-        let dbPosts = data;
-        console.log('dbData: ', dbPosts);
-        renderPosts(dbPosts);
-      });
+  getPosts();
+  $('.create-post').on('click', createPost);
 });
+
+let getPosts = () => {
+  $.get('/posts')
+  .done((data)=> {
+    let dbPosts = data;
+    console.log('dbData: ', dbPosts);
+    renderPosts(dbPosts);
+  });
+}
+
+
+let createPost = () => {
+  event.preventDefault();
+  let newAuthor = $('input.new-author').val();
+  let newPost   = $('input.new-post').val();
+  console.log('author: ', newAuthor, '\npost: ', newPost);
+  $.post('/posts', {
+    author : newAuthor,
+    post   : newPost
+  }).done(()=>{
+    getPosts();
+  });
+};
 
 let renderPosts = dbPosts => {
   dbPosts.forEach(dbPost => {
@@ -20,7 +39,3 @@ let renderPosts = dbPosts => {
     $('div.append-here').append($newPost);
   });
 };
-
-// let createPost = () => {
-//   let newAuthor = $('')
-// }
