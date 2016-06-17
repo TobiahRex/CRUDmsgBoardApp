@@ -37,8 +37,13 @@ app.put('/posts/:id', (req, res)=> {
     });
   });
 });
-
-
+app.delete('/posts/:id', (req, res)=>{
+  Posts.remove(req.params.id, err => {
+    err ? res.status(400) : Posts.get((err, dbData) => {
+      res.status(err ? 400 : 200).send(err || dbData);
+    });
+  });
+});
 
 
 app.listen(PORT, err => {

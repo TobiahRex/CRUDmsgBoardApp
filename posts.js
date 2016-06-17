@@ -57,6 +57,25 @@ let Posts = {
         err ? cb(err) : cb(null);
       });
     });
+  },
+  remove(id, cb){
+    console.log('id: ', id);
+    let dbData;
+    fs.readFile(path.join(__dirname, './db.json'), (err, data)=> {
+      if(err) return cb(err);
+      try {
+        dbData = JSON.parse(data);
+      } catch(err){
+        cb(err);
+      };
+      dbData = dbData.filter(dbPost => {
+        console.log('dbPost.id: ', dbPost.id);
+        dbPost.id !== id;
+      });
+      fs.writeFile(path.join(__dirname, './db.json'), JSON.stringify(dbData), err => {
+        err ? cb(err) : cb(null);
+      });
+    });
   }
 };
 
