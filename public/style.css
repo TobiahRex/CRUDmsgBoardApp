@@ -10,3 +10,7 @@ button.btn-success {
 div.template {
   display: none;
 }
+
+p.template-post-message {
+  margin-top : 20px;
+}
