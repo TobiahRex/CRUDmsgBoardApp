@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.get('/posts', (req, res) => {
   Posts.get((err, dbData)=> {
+    console.log('err: ', err);
     res.status(err ? 400 : 200).send(err || dbData);
   });
 });
@@ -54,3 +55,5 @@ app.delete('/posts/:id', (req, res)=>{
 app.listen(PORT, err => {
   console.log(err || `Server on ${PORT}`);
 });
+
+module.exports = app;

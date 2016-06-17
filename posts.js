@@ -13,7 +13,7 @@ let Posts = {
         dbData = JSON.parse(data);
       } catch(err){
         cb(err);
-      }; cb(dbData);
+      }; cb(null, dbData);
     });
   },
   getById(id, cb){
